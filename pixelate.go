@@ -5,12 +5,16 @@ import (
 	"log"
 	"os"
 
+	"./draw"
+
 	// Package image/jpeg is not used explicitly in the code below,
 	// but is imported for its initialization side-effect, which allows
 	// image.Decode to understand JPEG formatted images. Uncomment these
 	// two lines to also understand GIF and PNG images:
 	// _ "image/gif"
 	// _ "image/png"
+
+	"image/color"
 	_ "image/jpeg"
 )
 
@@ -43,7 +47,7 @@ func main() {
 			// returns 32 bit color
 			newRow := row / pixelSize
 			newCol := col / pixelSize
-			cell := newCol*width + newRow
+			cell := newRow*width + newCol
 
 			r, g, b, a := m.At(col, row).RGBA()
 
@@ -54,10 +58,23 @@ func main() {
 		}
 	}
 
+	var img = image.NewRGBA(image.Rect(0, 0, width, height))
+	pixels := make([]color.Color, height*width)
+
 	for pixel := 0; pixel < height*width; pixel++ {
-		reds[pixel] = reds[pixel] / pixelsPerCell
-		greens[pixel] = greens[pixel] / pixelsPerCell
-		blues[pixel] = blues[pixel] / pixelsPerCell
-		alphas[pixel] = alphas[pixel] / pixelsPerCell
+		col := color.RGBA{
+			uint8((reds[pixel] / pixelsPerCell >> 8)),
+			uint8((greens[pixel] / pixelsPerCell >> 8)),
+			uint8((blues[pixel] / pixelsPerCell >> 8)),
+			uint8((alphas[pixel] / pixelsPerCell >> 8)),
+		}
+
+		x1 := (pixel % width) * pixelSize
+		y1 := (pixel / width) * pixelSize
+		x2 := x1 + pixelSize
+		y2 := y1 + pixelSize
+
+		bounds := draw.Bounds{x1, y1, x2, y2}
+		draw.Rect(bounds, &img, col)
 	}
 }
