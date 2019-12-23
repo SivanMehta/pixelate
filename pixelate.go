@@ -10,7 +10,7 @@ import (
 	"image/jpeg"
 )
 
-const pixelSize = 10
+const pixelSize = 120
 const input = "bliss-4k.jpg"
 const output = "bliss-pixelated.jpg"
 
@@ -52,14 +52,14 @@ func main() {
 		}
 	}
 
-	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	img := image.NewRGBA(image.Rect(0, 0, bounds.Max.X, bounds.Max.Y))
 
 	for pixel := 0; pixel < height*width; pixel++ {
 		col := color.RGBA{
-			uint8((reds[pixel] / pixelsPerCell >> 8)),
-			uint8((greens[pixel] / pixelsPerCell >> 8)),
-			uint8((blues[pixel] / pixelsPerCell >> 8)),
-			uint8((alphas[pixel] / pixelsPerCell >> 8)),
+			uint8(((reds[pixel] / pixelsPerCell) >> 8)),
+			uint8(((greens[pixel] / pixelsPerCell) >> 8)),
+			uint8(((blues[pixel] / pixelsPerCell) >> 8)),
+			uint8(((alphas[pixel] / pixelsPerCell) >> 8)),
 		}
 
 		x1 := (pixel % width) * pixelSize
@@ -70,14 +70,6 @@ func main() {
 		rectangle := image.Rect(x1, y1, x2, y2)
 		draw.Draw(img, rectangle, &image.Uniform{col}, image.ZP, draw.Src)
 	}
-
-	// myimage := image.NewRGBA(image.Rect(0, 0, 220, 220)) // x1,y1,  x2,y2
-
-	// red_rect := image.Rect(60, 80, 120, 160) //  geometry of 2nd rectangle
-	// myred := color.RGBA{200, 0, 0, 255}
-
-	// // create a red rectangle atop the green surface
-	// draw.Draw(myimage, red_rect, &image.Uniform{myred}, image.ZP, draw.Src)
 
 	myfile, err := os.Create(output) // ... now lets save imag
 	if err != nil {
