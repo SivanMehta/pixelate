@@ -1,16 +1,18 @@
 package main
 
 import (
+	"strconv"
+
 	"./pixelate"
 )
 
 func main() {
 	input := "bliss-4k.jpg"
-	pixelate.Pixelate(input, "frames/bliss-240.jpg", 240)
-	pixelate.Pixelate(input, "frames/bliss-120.jpg", 120)
-	pixelate.Pixelate(input, "frames/bliss-80.jpg", 80)
-	pixelate.Pixelate(input, "frames/bliss-60.jpg", 60)
-	pixelate.Pixelate(input, "frames/bliss-48.jpg", 48)
-	pixelate.Pixelate(input, "frames/bliss-40.jpg", 40)
-	pixelate.Pixelate(input, "frames/bliss-20.jpg", 20)
+	sizes := [...]int{20, 40, 48, 60, 80, 120, 240}
+
+	for size := 0; size < len(sizes); size++ {
+		pixelSize := sizes[size]
+		output := "frames/bliss-" + strconv.Itoa(pixelSize) + ".jpg"
+		pixelate.Pixelate(input, output, pixelSize)
+	}
 }
