@@ -3,3 +3,6 @@ make:
 
 dimensions:
 	@ffprobe -v error -show_entries stream=width,height -of csv=p=0:s=x bliss-pixelated.jpg
+
+output.gif:
+	@echo wat
