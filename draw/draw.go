@@ -15,5 +15,9 @@ type Bounds struct {
 
 // Rect draws a rectangle utilizing HLine() and VLine()
 func Rect(bounds Bounds, img *image.Rectangle, col color.Color) {
-
+	for row := bounds.Y1; row < bounds.Y2; row++ {
+		for column := bounds.X1; column < bounds.X2; column++ {
+			img.Set(row, column, col)
+		}
+	}
 }
