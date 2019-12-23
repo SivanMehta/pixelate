@@ -1,6 +1,7 @@
 package pixelate
 
 import (
+	"fmt"
 	"image"
 	"log"
 	"os"
@@ -13,6 +14,7 @@ import (
 // Pixelate a given image down to squares of a given size
 func Pixelate(input string, output string, pixelSize int) {
 	// Decode the JPEG data. If reading from file, create a reader with
+	fmt.Println("Pixelating", input, "to have width", pixelSize, "square pixels -->", output)
 
 	reader, err := os.Open(input)
 	if err != nil {

@@ -1,8 +1,10 @@
-make:
-	@go run pixelate.go
-
 dimensions:
-	@ffprobe -v error -show_entries stream=width,height -of csv=p=0:s=x bliss-pixelated.jpg
+	@ffprobe -v error -show_entries stream=width,height -of csv=p=0:s=x frames/bliss-4k.jpg
 
-output.gif:
-	@echo wat
+frames/*.jpg:
+	@go run main.go
+
+output.gif: frames/*.jpg
+	@echo Concatenating frames into a .gif ...
+	@convert -delay 100 -loop 0 bliss-4k.jpg frames/bliss-{20,40,48,60,80,120,240}.jpg output.gif
+	@rm frames/*.jpg
